@@ -1,9 +1,8 @@
 {
   "kind": "collectionType",
-  "collectionName": "product",
+  "collectionName": "vendors",
   "info": {
-    "name": "Product",
-    "description": ""
+    "name": "Vendors"
   },
   "options": {
     "increments": true,
@@ -19,7 +18,8 @@
       "type": "richtext"
     },
     "price": {
-      "type": "integer",
+      "type": "decimal",
+      "default": 0,
       "required": true
     },
     "images": {
@@ -31,19 +31,9 @@
       "plugin": "upload",
       "required": false
     },
-    "availability": {
-      "type": "integer",
-      "default": 0,
-      "required": true
-    },
-    "product_types": {
-      "columnName": "product_types",
-      "collection": "product-types",
-      "via": "product"
-    },
-    "vendor": {
-      "via": "products",
-      "model": "vendors"
+    "products": {
+      "collection": "product",
+      "via": "vendor"
     }
   }
 }

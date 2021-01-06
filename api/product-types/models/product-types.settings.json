@@ -16,9 +16,13 @@
       "required": true
     },
     "color": {
-      "type": "colorpicker",
-      "columnType": "string",
-      "required": true
+      "type": "string",
+      "default": "#4287f5",
+      "regex": "/^#([0-9a-f]{3}){1,2}$/i"
+    },
+    "product": {
+      "via": "product_types",
+      "model": "product"
     }
   }
 }
