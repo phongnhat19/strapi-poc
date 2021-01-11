@@ -11,6 +11,8 @@ RUN npm install --only=dev
 
 RUN npm install --only=prod
 
+RUN npm run build
+
 COPY . .
 
 EXPOSE 8080
