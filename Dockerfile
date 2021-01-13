@@ -7,9 +7,7 @@ WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --only=dev
-
-RUN npm install --only=prod
+RUN npm install
 
 RUN npm run build
 
@@ -17,4 +15,4 @@ COPY . .
 
 EXPOSE 8080
 
-RUN npm start
+CMD ["npm", "start"]
