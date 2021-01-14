@@ -7,7 +7,8 @@
     "develop": "strapi develop",
     "start": "strapi start",
     "build": "strapi build",
-    "strapi": "strapi"
+    "strapi": "strapi",
+    "reset-password": "strapi admin:reset-user-password --email=phongnhat19@gmail.com --password=Phongnhat@23101995"
   },
   "devDependencies": {},
   "dependencies": {
