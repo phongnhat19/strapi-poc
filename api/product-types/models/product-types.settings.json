@@ -17,12 +17,24 @@
     },
     "color": {
       "type": "string",
-      "default": "#4287f5",
-      "regex": "/^#([0-9a-f]{3}){1,2}$/i"
+      "default": "#4287f5"
     },
     "product": {
-      "via": "product_types",
-      "model": "product"
+      "model": "product",
+      "via": "product_types"
+    },
+    "vendor": {
+      "model": "vendors"
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": [
+        "PENDING",
+        "ACTIVE",
+        "INACTIVE"
+      ],
+      "default": "PENDING",
+      "required": true
     }
   }
 }

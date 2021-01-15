@@ -37,9 +37,9 @@
       "required": true
     },
     "product_types": {
+      "via": "product",
       "columnName": "product_types",
-      "collection": "product-types",
-      "via": "product"
+      "collection": "product-types"
     },
     "vendor": {
       "via": "products",
