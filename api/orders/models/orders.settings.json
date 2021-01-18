@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "orders",
+  "info": {
+    "name": "Orders",
+    "description": ""
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true,
+    "draftAndPublish": false
+  },
+  "attributes": {
+    "customer_name": {
+      "type": "string",
+      "required": true
+    },
+    "shipping_address": {
+      "type": "text",
+      "required": true
+    },
+    "vendor": {
+      "model": "vendors"
+    },
+    "order_number": {
+      "type": "string",
+      "unique": true
+    },
+    "order_status": {
+      "type": "enumeration",
+      "enum": [
+        "PENDING",
+        "CONFIRMED",
+        "SHIPPING",
+        "COMPLETED"
+      ],
+      "default": "PENDING"
+    },
+    "items": {
+      "collection": "product"
+    },
+    "payment_method": {
+      "type": "enumeration",
+      "enum": [
+        "COD",
+        "CREDIT_CARD",
+        "PAYPAL"
+      ],
+      "required": true
+    },
+    "invoice_amount": {
+      "type": "decimal"
+    },
+    "delivery_tracking_number": {
+      "type": "string"
+    }
+  }
+}

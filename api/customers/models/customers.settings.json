@@ -2,7 +2,8 @@
   "kind": "collectionType",
   "collectionName": "customers",
   "info": {
-    "name": "Customers"
+    "name": "Customers",
+    "description": ""
   },
   "options": {
     "increments": true,
@@ -17,6 +18,9 @@
     "shipping_address": {
       "type": "string",
       "required": true
+    },
+    "vendor": {
+      "model": "vendors"
     }
   }
 }

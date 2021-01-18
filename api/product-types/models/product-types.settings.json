@@ -23,9 +23,6 @@
       "model": "product",
       "via": "product_types"
     },
-    "vendor": {
-      "model": "vendors"
-    },
     "status": {
       "type": "enumeration",
       "enum": [
