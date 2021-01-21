@@ -29,17 +29,28 @@ module.exports = {
             const { data, files } = parseMultipartData(ctx);
             entity = await strapi.services.orders.create(data, { files });
         } else {
+            const body = ctx.request.body
+            // Update required field
+            body.order_status = 'PENDING'
+            body.order_number = makeid(9)
+            let existed = await strapi.models.orders.find({ order_number: body.order_number }).exec()
+            while (existed.length > 0) {
+                body.order_number = makeid(9)
+                existed = await strapi.models.orders.find({ order_number: body.order_number }).exec()
+            }
+
+            // Calculate invoice amount
+            let total = 0
+            for (let index = 0; index < body.order_items.length; index++) {
+                const item = body.order_items[index];
+                const product = await strapi.models.product.findById(item.product);
+                if (product) {
+                    total += item.quantity * product.price
+                }
+            }
+            body.invoice_amount = total
+
             entity = await strapi.services.orders.create(ctx.request.body);
-        }
-
-        // Update required field
-        entity.order_status = 'PENDING'
-        entity.order_number = makeid(9)
-
-        let existed = await strapi.models.orders.find({ order_number: entity.order_number }).exec()
-        while (existed.length > 0) {
-            entity.order_number = makeid(9)
-            existed = await strapi.models.orders.find({ order_number: entity.order_number }).exec()
         }
 
         return sanitizeEntity(entity, { model: strapi.models.orders });

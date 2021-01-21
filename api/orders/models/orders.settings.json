@@ -36,9 +36,6 @@
       ],
       "default": "PENDING"
     },
-    "items": {
-      "collection": "product"
-    },
     "payment_method": {
       "type": "enumeration",
       "enum": [
@@ -53,6 +50,11 @@
     },
     "delivery_tracking_number": {
       "type": "string"
+    },
+    "order_items": {
+      "type": "component",
+      "repeatable": true,
+      "component": "order-item.order-item"
     }
   }
 }
