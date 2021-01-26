@@ -5,20 +5,28 @@
  */
 
 module.exports = async (ctx, next) => {
-  const vendor = ctx.request.body.vendor || ctx.request.params.vendor || ''
+  let vendor = ctx.request.body.vendor || ctx.params.vendor || ''
+
+  if (vendor === '') {
+    const orderId = ctx.params.id || ''
+    if (!orderId) return ctx.badRequest('Vendor is required')
+    const order = await strapi.models.orders.findById(orderId).exec()
+    if (!order) return ctx.badRequest('Vendor is required')
+    vendor = order.vendor.toString()
+  }
 
   if (!vendor) {
     return ctx.badRequest('Vendor is required')
   }
 
   // Validate vendor
-  const existed = await strapi.models.vendors.exists({ _id: ctx.request.body.vendor })
+  const existed = await strapi.models.vendors.exists({ _id: vendor })
   if (!existed) {
     return ctx.notFound(`Vendor not found`);
   }
   // Validate vendor owner
   const vendors = await strapi.models.vendors.find({ owner: ctx.state.user.id }).exec()
-  let isOwner = vendors.filter((vendor) => vendor.id === ctx.request.body.vendor).length > 0
+  let isOwner = vendors.filter((vendorObj) => vendorObj.id === vendor).length > 0
   if (!isOwner) {
     return ctx.unauthorized(`You are NOT owner`);
   }

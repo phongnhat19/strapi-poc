@@ -55,4 +55,29 @@ module.exports = {
 
         return sanitizeEntity(entity, { model: strapi.models.orders });
     },
+
+    // /**
+    // * Update an order.
+    // *
+    // * @return {Object}
+    // */
+
+    // async update(ctx) {
+    //     const { id } = ctx.params;
+
+    //     let entity;
+    //     console.log(ctx.request)
+    //     console.log(id)
+    //     return null;
+    //     if (ctx.is('multipart')) {
+    //         const { data, files } = parseMultipartData(ctx);
+    //         entity = await strapi.services.restaurant.update({ id }, data, {
+    //             files,
+    //         });
+    //     } else {
+    //         entity = await strapi.services.restaurant.update({ id }, ctx.request.body);
+    //     }
+
+    //     return sanitizeEntity(entity, { model: strapi.models.restaurant });
+    // },
 };
