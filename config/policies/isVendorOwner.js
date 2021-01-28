@@ -5,7 +5,13 @@
  */
 
 module.exports = async (ctx, next) => {
-  let vendor = ctx.request.body.vendor || ctx.params.vendor || ''
+  let vendor
+  if (ctx.is('multipart')) {
+    const { data } = parseMultipartData(ctx);
+    vendor = data.vendor || ''
+  } else {
+    vendor = ctx.request.body.vendor || ctx.params.vendor || ''
+  }
 
   if (vendor === '') {
     const orderId = ctx.params.id || ''
