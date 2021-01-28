@@ -1,5 +1,6 @@
 'use strict';
 const { parseMultipartData, sanitizeEntity } = require('strapi-utils');
+const stripe = require('stripe')('sk_test_51IDw7QHYRruOoW8HxxnBDLeRPp1jRKPUdjsIk1fMwnZpWri1JjOkI3Q9QvkEmyShzr7CyXpcLZr48zzneMrWwbxc00uS2ph9EL');
 
 function makeid(length) {
     var result = '';
@@ -50,34 +51,73 @@ module.exports = {
             }
             body.invoice_amount = total
 
-            entity = await strapi.services.orders.create(ctx.request.body);
+            if (body.payment_method === 'CREDIT_CARD') {
+                const token = body.token
+                if (!token) return ctx.badRequest('Invalid stripe token')
+                await stripe.charges.create({
+                    // Transform cents to dollars.
+                    amount: total * 100,
+                    currency: 'usd',
+                    description: `Order ${body.order_number} by ${ctx.state.user.id}`,
+                    source: token,
+                });
+            }
+
+            entity = await strapi.services.orders.create(body);
         }
 
         return sanitizeEntity(entity, { model: strapi.models.orders });
     },
 
-    // /**
-    // * Update an order.
-    // *
-    // * @return {Object}
-    // */
+    /**
+    * Update an order.
+    *
+    * @return {Object}
+    */
 
-    // async update(ctx) {
-    //     const { id } = ctx.params;
+    async update(ctx) {
+        const { id } = ctx.params;
 
-    //     let entity;
-    //     console.log(ctx.request)
-    //     console.log(id)
-    //     return null;
-    //     if (ctx.is('multipart')) {
-    //         const { data, files } = parseMultipartData(ctx);
-    //         entity = await strapi.services.restaurant.update({ id }, data, {
-    //             files,
-    //         });
-    //     } else {
-    //         entity = await strapi.services.restaurant.update({ id }, ctx.request.body);
-    //     }
+        let entity;
+        if (ctx.is('multipart')) {
+            const { data, files } = parseMultipartData(ctx);
+            entity = await strapi.services.orders.update({ id }, data, {
+                files,
+            });
+        } else {
+            // Validate item availability
+            const order = await strapi.models.orders.findById(id)
+            const items = order.order_items || []
 
-    //     return sanitizeEntity(entity, { model: strapi.models.restaurant });
-    // },
+            for (let index = 0; index < items.length; index++) {
+                const item = items[index];
+                const product = await strapi.models.product.findById(item.ref.product._id)
+                if (product.availability < item.ref.quantity) {
+                    return ctx.badRequest(`Not enough item [${product.name}]`)
+                }
+            }
+
+            entity = await strapi.services.orders.update({ id }, ctx.request.body);
+        }
+
+        if (entity.order_status === 'CONFIRMED') {
+            const items = entity.order_items
+            for (let index = 0; index < items.length; index++) {
+                const item = items[index];
+                const product = await strapi.models.product.findById(item.product.id)
+                product.availability -= item.quantity
+                await product.save()
+            }
+        } else if (entity.order_status === 'RETURNED') {
+            const items = entity.order_items
+            for (let index = 0; index < items.length; index++) {
+                const item = items[index];
+                const product = await strapi.models.product.findById(item.product.id)
+                product.availability += item.quantity
+                await product.save()
+            }
+        }
+
+        return sanitizeEntity(entity, { model: strapi.models.orders });
+    },
 };
