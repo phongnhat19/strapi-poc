@@ -31,8 +31,10 @@
       "enum": [
         "PENDING",
         "CONFIRMED",
+        "REJECTED",
         "SHIPPING",
-        "COMPLETED"
+        "COMPLETED",
+        "RETURNED"
       ],
       "default": "PENDING"
     },
@@ -55,6 +57,9 @@
       "type": "component",
       "repeatable": true,
       "component": "order-item.order-item"
+    },
+    "note": {
+      "type": "richtext"
     }
   }
 }
