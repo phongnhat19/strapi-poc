@@ -88,7 +88,7 @@ module.exports = {
             // Validate item availability
             const order = await strapi.models.orders.findById(id)
             const items = order.order_items || []
-            if (entity.order_status === 'CONFIRMED') {
+            if (ctx.request.body.order_status === 'CONFIRMED') {
                 for (let index = 0; index < items.length; index++) {
                     const item = items[index];
                     const product = await strapi.models.product.findById(item.ref.product._id)
