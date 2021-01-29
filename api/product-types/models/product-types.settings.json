@@ -20,8 +20,8 @@
       "default": "#4287f5"
     },
     "product": {
-      "model": "product",
-      "via": "product_types"
+      "via": "product_types",
+      "model": "product"
     },
     "status": {
       "type": "enumeration",

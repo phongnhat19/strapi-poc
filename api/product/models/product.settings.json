@@ -37,13 +37,16 @@
       "required": true
     },
     "product_types": {
-      "via": "product",
       "columnName": "product_types",
-      "collection": "product-types"
+      "collection": "product-types",
+      "via": "product"
     },
     "vendor": {
-      "via": "products",
-      "model": "vendors"
+      "model": "vendors",
+      "via": "products"
+    },
+    "info": {
+      "type": "richtext"
     }
   }
 }
