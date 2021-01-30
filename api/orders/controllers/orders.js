@@ -54,13 +54,19 @@ module.exports = {
             if (body.payment_method === 'CREDIT_CARD') {
                 const token = body.token
                 if (!token) return ctx.badRequest('Invalid stripe token')
-                await stripe.charges.create({
-                    // Transform cents to dollars.
-                    amount: total * 100,
-                    currency: 'usd',
-                    description: `Order ${body.order_number} by ${ctx.state.user.id}`,
-                    source: token,
-                });
+                try {
+                    await stripe.charges.create({
+                        // Transform cents to dollars.
+                        amount: total * 100,
+                        currency: 'usd',
+                        description: `Order ${body.order_number}`,
+                        source: token,
+                    }); 
+                    body.order_status = 'CONFIRMED'
+                } catch (error) {
+                    console.error(error)
+                    return ctx.badRequest('Payment fail. Please retry')
+                }
             }
 
             entity = await strapi.services.orders.create(body);
