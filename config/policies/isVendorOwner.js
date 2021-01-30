@@ -1,4 +1,5 @@
 'use strict';
+const { parseMultipartData } = require('strapi-utils');
 
 /**
  * `isVendorOwner` policy.
