@@ -47,6 +47,7 @@ module.exports = {
                 const product = await strapi.models.product.findById(item.product);
                 if (product) {
                     total += item.quantity * product.price
+                    body.order_items[index].vendor = product.vendor
                 }
             }
             body.invoice_amount = total

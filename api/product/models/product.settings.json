@@ -42,8 +42,8 @@
       "via": "product"
     },
     "vendor": {
-      "model": "vendors",
-      "via": "products"
+      "via": "products",
+      "model": "vendors"
     },
     "info": {
       "type": "richtext"

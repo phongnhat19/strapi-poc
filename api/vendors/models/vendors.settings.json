@@ -8,7 +8,7 @@
   "options": {
     "increments": true,
     "timestamps": true,
-    "draftAndPublish": true
+    "draftAndPublish": false
   },
   "attributes": {
     "name": {
@@ -28,8 +28,8 @@
       "required": false
     },
     "products": {
-      "via": "vendor",
-      "collection": "product"
+      "collection": "product",
+      "via": "vendor"
     },
     "owner": {
       "plugin": "users-permissions",

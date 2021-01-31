@@ -2,7 +2,8 @@
   "collectionName": "components_order_item_order_items",
   "info": {
     "name": "Order Item",
-    "icon": "archive"
+    "icon": "archive",
+    "description": ""
   },
   "options": {},
   "attributes": {
@@ -11,6 +12,9 @@
     },
     "quantity": {
       "type": "integer"
+    },
+    "vendor": {
+      "model": "vendors"
     }
   }
 }
