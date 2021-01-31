@@ -19,8 +19,8 @@
       "type": "text",
       "required": true
     },
-    "vendor": {
-      "model": "vendors"
+    "vendors": {
+      "collection": "vendors"
     },
     "order_number": {
       "type": "string",
