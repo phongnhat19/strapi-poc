@@ -7,4 +7,14 @@ module.exports = ({ env }) => ({
             api_secret: env('CLOUDINARY_SECRET') || 'Rh8jRkl4m8z8a',
         },
     },
+    email: {
+        provider: 'sendgrid',
+        providerOptions: {
+            apiKey: env('SENDGRID_API_KEY') || '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',
+        },
+        settings: {
+            defaultFrom: 'phongnhat19@gmail.com',
+            defaultReplyTo: 'phongnhat19@gmail.com',
+        },
+    },
 });

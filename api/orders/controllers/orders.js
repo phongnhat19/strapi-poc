@@ -12,6 +12,14 @@ function makeid(length) {
     return result;
 }
 
+const emailTemplate = {
+    subject: 'Your order is created successfully!',
+    text: `Your order is created successfully!
+        Check your order detail here: https://strapi-po<%= order.order_number %>`,
+    html: `<h1>Your order is created successfully!</h1>
+      <p>Check your order detail <a href="https://strapi-poc-fe.gophuot.vn/order/<%= order.order_number %>">here</a>.<p>`,
+};
+
 /**
  * Read the documentation (https://strapi.io/documentation/developer-docs/latest/concepts/controllers.html#core-controllers)
  * to customize this controller
@@ -62,7 +70,7 @@ module.exports = {
                         currency: 'usd',
                         description: `Order ${body.order_number}`,
                         source: token,
-                    }); 
+                    });
                     body.order_status = 'CONFIRMED'
                 } catch (error) {
                     console.error(error)
@@ -72,6 +80,10 @@ module.exports = {
 
             entity = await strapi.services.orders.create(body);
         }
+
+        await strapi.plugins['email'].services.email.sendTemplatedEmail({
+            to: 'nhat.nguyen@kardiachain.io'
+        }, emailTemplate, {order: entity});
 
         return sanitizeEntity(entity, { model: strapi.models.orders });
     },
