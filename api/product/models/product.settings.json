@@ -20,7 +20,9 @@
     },
     "price": {
       "type": "integer",
-      "required": true
+      "required": true,
+      "min": 0,
+      "max": 10000
     },
     "images": {
       "collection": "file",
@@ -42,8 +44,8 @@
       "via": "product"
     },
     "vendor": {
-      "via": "products",
-      "model": "vendors"
+      "model": "vendors",
+      "via": "products"
     },
     "info": {
       "type": "richtext"
