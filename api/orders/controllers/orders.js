@@ -79,12 +79,11 @@ module.exports = {
             }
 
             entity = await strapi.services.orders.create(body);
-        }
-
-        if (body.mail) {
-            await strapi.plugins['email'].services.email.sendTemplatedEmail({
-                to: body.mail
-            }, emailTemplate, {order: entity});
+            if (body.mail) {
+                await strapi.plugins['email'].services.email.sendTemplatedEmail({
+                    to: body.mail
+                }, emailTemplate, {order: entity});
+            }
         }
 
         return sanitizeEntity(entity, { model: strapi.models.orders });
