@@ -22,6 +22,9 @@
     },
     "customer_address": {
       "type": "text"
+    },
+    "email": {
+      "type": "email"
     }
   }
 }
