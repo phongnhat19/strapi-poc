@@ -28,8 +28,8 @@
       "required": false
     },
     "products": {
-      "collection": "product",
-      "via": "vendor"
+      "via": "vendor",
+      "collection": "product"
     },
     "owner": {
       "plugin": "users-permissions",

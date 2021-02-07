@@ -29,14 +29,11 @@
     "order_status": {
       "type": "enumeration",
       "enum": [
-        "PENDING",
-        "CONFIRMED",
-        "REJECTED",
-        "SHIPPING",
-        "COMPLETED",
-        "RETURNED"
+        "PREPARING",
+        "DELIVERING",
+        "COMPLETED"
       ],
-      "default": "PENDING"
+      "default": "PREPARING"
     },
     "payment_method": {
       "type": "enumeration",

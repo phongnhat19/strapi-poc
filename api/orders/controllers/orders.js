@@ -20,6 +20,8 @@ const emailTemplate = {
       <p>Check your order detail <a href="https://strapi-poc-fe.gophuot.vn/order/<%= order.order_number %>">here</a>.<p>`,
 };
 
+const ORDER_MODEL = require('../models/orders.settings.json')
+
 /**
  * Read the documentation (https://strapi.io/documentation/developer-docs/latest/concepts/controllers.html#core-controllers)
  * to customize this controller
@@ -40,7 +42,7 @@ module.exports = {
         } else {
             const body = ctx.request.body
             // Update required field
-            body.order_status = 'PENDING'
+            body.order_status = ORDER_MODEL.attributes.order_status.default
             body.order_number = makeid(9)
             let existed = await strapi.models.orders.find({ order_number: body.order_number }).exec()
             while (existed.length > 0) {
@@ -71,7 +73,6 @@ module.exports = {
                         description: `Order ${body.order_number}`,
                         source: token,
                     });
-                    body.order_status = 'CONFIRMED'
                 } catch (error) {
                     console.error(error)
                     return ctx.badRequest('Payment fail. Please retry')
@@ -95,50 +96,50 @@ module.exports = {
     * @return {Object}
     */
 
-    async update(ctx) {
-        const { id } = ctx.params;
+    // async update(ctx) {
+    //     const { id } = ctx.params;
 
-        let entity;
-        if (ctx.is('multipart')) {
-            const { data, files } = parseMultipartData(ctx);
-            entity = await strapi.services.orders.update({ id }, data, {
-                files,
-            });
-        } else {
-            // Validate item availability
-            const order = await strapi.models.orders.findById(id)
-            const items = order.order_items || []
-            if (ctx.request.body.order_status === 'CONFIRMED') {
-                for (let index = 0; index < items.length; index++) {
-                    const item = items[index];
-                    const product = await strapi.models.product.findById(item.ref.product._id)
-                    if (product.availability < item.ref.quantity) {
-                        return ctx.badRequest(`Not enough item [${product.name}]`)
-                    }
-                }
-            }
+    //     let entity;
+    //     if (ctx.is('multipart')) {
+    //         const { data, files } = parseMultipartData(ctx);
+    //         entity = await strapi.services.orders.update({ id }, data, {
+    //             files,
+    //         });
+    //     } else {
+    //         // Validate item availability
+    //         const order = await strapi.models.orders.findById(id)
+    //         const items = order.order_items || []
+    //         if (ctx.request.body.order_status === 'CONFIRMED') {
+    //             for (let index = 0; index < items.length; index++) {
+    //                 const item = items[index];
+    //                 const product = await strapi.models.product.findById(item.ref.product._id)
+    //                 if (product.availability < item.ref.quantity) {
+    //                     return ctx.badRequest(`Not enough item [${product.name}]`)
+    //                 }
+    //             }
+    //         }
 
-            entity = await strapi.services.orders.update({ id }, ctx.request.body);
-        }
+    //         entity = await strapi.services.orders.update({ id }, ctx.request.body);
+    //     }
 
-        if (entity.order_status === 'CONFIRMED') {
-            const items = entity.order_items
-            for (let index = 0; index < items.length; index++) {
-                const item = items[index];
-                const product = await strapi.models.product.findById(item.product.id)
-                product.availability -= item.quantity
-                await product.save()
-            }
-        } else if (entity.order_status === 'RETURNED') {
-            const items = entity.order_items
-            for (let index = 0; index < items.length; index++) {
-                const item = items[index];
-                const product = await strapi.models.product.findById(item.product.id)
-                product.availability += item.quantity
-                await product.save()
-            }
-        }
+    //     if (entity.order_status === 'CONFIRMED') {
+    //         const items = entity.order_items
+    //         for (let index = 0; index < items.length; index++) {
+    //             const item = items[index];
+    //             const product = await strapi.models.product.findById(item.product.id)
+    //             product.availability -= item.quantity
+    //             await product.save()
+    //         }
+    //     } else if (entity.order_status === 'RETURNED') {
+    //         const items = entity.order_items
+    //         for (let index = 0; index < items.length; index++) {
+    //             const item = items[index];
+    //             const product = await strapi.models.product.findById(item.product.id)
+    //             product.availability += item.quantity
+    //             await product.save()
+    //         }
+    //     }
 
-        return sanitizeEntity(entity, { model: strapi.models.orders });
-    },
+    //     return sanitizeEntity(entity, { model: strapi.models.orders });
+    // },
 };

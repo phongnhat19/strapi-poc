@@ -33,22 +33,25 @@
       "plugin": "upload",
       "required": false
     },
-    "availability": {
-      "type": "integer",
-      "default": 0,
-      "required": true
-    },
     "product_types": {
       "columnName": "product_types",
       "collection": "product-types",
       "via": "product"
     },
     "vendor": {
-      "via": "products",
-      "model": "vendors"
+      "model": "vendors",
+      "via": "products"
     },
     "info": {
       "type": "richtext"
+    },
+    "availability": {
+      "type": "enumeration",
+      "enum": [
+        "AVAILABLE",
+        "PRE_ORDER",
+        "NOT_AVAILABLE"
+      ]
     }
   }
 }
