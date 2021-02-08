@@ -13,9 +13,6 @@
     "quantity": {
       "type": "integer"
     },
-    "vendor": {
-      "model": "vendors"
-    },
     "price": {
       "type": "decimal"
     }
