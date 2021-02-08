@@ -15,6 +15,9 @@
     },
     "vendor": {
       "model": "vendors"
+    },
+    "price": {
+      "type": "decimal"
     }
   }
 }

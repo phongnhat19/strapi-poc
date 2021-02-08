@@ -58,6 +58,7 @@ module.exports = {
                 if (product) {
                     total += item.quantity * product.price
                     body.order_items[index].vendor = product.vendor
+                    item.price = product.price
                 }
             }
             body.invoice_amount = total
