@@ -19,10 +19,6 @@
       "type": "string",
       "default": "#4287f5"
     },
-    "product": {
-      "via": "product_types",
-      "model": "product"
-    },
     "status": {
       "type": "enumeration",
       "enum": [
