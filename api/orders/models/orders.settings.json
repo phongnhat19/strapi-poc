@@ -61,6 +61,10 @@
     "user": {
       "plugin": "users-permissions",
       "model": "user"
+    },
+    "customer": {
+      "model": "customers",
+      "via": "orders"
     }
   }
 }

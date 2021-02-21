@@ -28,6 +28,10 @@
     },
     "phone_number": {
       "type": "string"
+    },
+    "orders": {
+      "via": "customer",
+      "collection": "orders"
     }
   }
 }
